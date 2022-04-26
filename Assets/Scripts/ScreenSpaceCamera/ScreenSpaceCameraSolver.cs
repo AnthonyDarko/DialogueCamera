@@ -176,8 +176,8 @@ namespace Pangu.Tools
 
                 var BdotK2 = BdotN2 - VecWbN.y * VecWbN.y;
                 var BdotK = sqrt(BdotK2);
-                var SinBdotWBK = (float)BdotK / (VecWBK.magnitude);
-                var BdotWBK = Mathf.Asin(SinBdotWBK) * Mathf.Rad2Deg;
+                var SinBdotWBK = (float)BdotK / sqrt((float)Vector3.Dot(VecWBK, VecWBK));
+                var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
                 //判断VecWBBdot与VecWBK的位置关系
                 {
