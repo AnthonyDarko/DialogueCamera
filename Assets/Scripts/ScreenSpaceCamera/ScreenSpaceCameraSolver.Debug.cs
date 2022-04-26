@@ -35,11 +35,15 @@ namespace Pangu.Tools
             var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);  //N点的位置是会发生变化的
             var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
             Handles.DrawLine(wbPosition, wbPosition + VecWBK);
-            Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.1f);
-            Handles.DrawLine(_lookCenter, _lookCenter + (wbPosition - _bp) * 2);
+            //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.05f);
+            Handles.DrawLine(_lookCenter, _lookCenter + (wfPosition - _fp) * 10);
+            Handles.DrawLine(_lookCenter, _lookCenter + Vector3.down * 0.1f);
             //Handles.DrawLine(_fp, _fp + (wfPosition - _fp) * 10);
             Handles.DrawLine(wbPosition, wbPosition + VecWbN * 1f);
-            Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
+            Handles.Label(wbPosition + VecWbN, "N");
+            //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
+            Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
+            Handles.Label(wbPosition + VecWBK, "K");
             Handles.DrawLine(wbPosition, wbPosition + _camera.transform.right * 0.07f);
             //Handles.DrawLine(_lookCenter, _lookCenter + _camera.transform.forward * 1f);
 
@@ -75,7 +79,7 @@ namespace Pangu.Tools
             Handles.Label((ppp + posCenter) / 2, $"{Mathf.Abs(vp.x * 2 - 1):F2}");
             Handles.Label((ppp + position) / 2, $"{(vp.y - 0.5f):F2}");
             DrawLine(nearCenter, cp);
-            //DrawLine(wfPosition, wfPosition - _fp + _bp);
+            //DrawLine(wbPosition, wbPosition + _fp - _bp);
         }
 
         private void DrawTarget()

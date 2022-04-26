@@ -48,7 +48,7 @@ namespace Pangu.Tools
 
         [SerializeField] private float Var1;// = _camera.transform.up.y;
         [SerializeField] private float Var2;
-        //[SerializeField] private float Var3;
+        [SerializeField] private float Var3;
 
         public double bCompX => back.compositionX;
         public double bCompY => back.compositionY;
@@ -165,16 +165,14 @@ namespace Pangu.Tools
                 //}
 
                 var BdotN2 = VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC; //BdotL * BdotL + LN * LN; //这里的计算方式需要改变，
-                var BdotK = sqrt(BdotN2 - VecWbN.y * VecWbN.y);
-                var SinBdotWBK = BdotK / (VecWBK.magnitude);
+                //var BdotK = sqrt(BdotN2 - VecWbN.y * VecWbN.y);
+                //var SinBdotWBK = BdotK / (VecWBK.magnitude);
                 //var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
-                var BdotWB = abs(bl * _sinC); //bl的值是会变化的
+                var BdotWB = abs(bl * _sinC); 
                 float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude);
                 var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
-
-                Var1 = (float)bl;// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
-                Var2 = (float)BdotL;// (bl * _sinC);// (BdotL * BdotL + LN * LN);
+                var WBBdot = bl * abs(_sinC);
 
                 //判断VecWBBdot与VecWBK的位置关系
                 {
@@ -187,9 +185,13 @@ namespace Pangu.Tools
                         cameraRight = (Quaternion.AngleAxis(BdotWBK, Vector3.up) * -VecWBK).normalized;
                     }
                 }
-                
 
-                var WBBdot = bl * abs(_sinC);
+                Var1 = (float)VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
+                Var2 = (float)bl;// (Mathf.Asin((float)(BdotWB / bl)) * Mathf.Rad2Deg);// (bl * _sinC);// (BdotL * BdotL + LN * LN);
+                Var3 = (float)(bl * _sinC);
+
+
+
                 //判断VecWBBdot与CameraRight的位置关系
                 Vector3 VecWBBdot;
                 {
