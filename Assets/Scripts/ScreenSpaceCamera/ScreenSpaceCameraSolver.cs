@@ -132,7 +132,6 @@ namespace Pangu.Tools
 
             //不采用迭代的方式，直接进行计算，这个值是否应该由外界决定，由设计者决定上方向的方向，这里设计者应该给出一个场景的上方向（废弃）
             #region CalUp
-
             //利用三射线定理，由相机与物体B连线，可以得到CWB与WBWF的夹角，由bY与CWB的数值关系，可以拿到他们的夹角，再由cos(WBWFF)可以拿到FWBB的余弦值，由三射线定理拿到摄像机上方向与面C-WB-WF的夹角
             //利用二面角，做三次旋转
             //上述想法废弃，改用Pitch，Yaw对WBWF向量的变化情况进行描述，在变化过程中，WBWF的旋转情况如何，转轴是什么向量？
@@ -147,7 +146,7 @@ namespace Pangu.Tools
             if (true)
             {
                 var VecWbWf = wfPosition - wbPosition;
-                var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);  //N点的位置是会发生变化的
+                var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);
                 var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
                 // B'L = BL * cos(Yaw), LN = fY * blPfb, B'N = sqrt(B'L * B'L + LN * LN), B'K = sqrt(B'N * B'N - VecWbN.y * VecWbN.y)
                 var BdotL = bl * abs(_cosC); 
