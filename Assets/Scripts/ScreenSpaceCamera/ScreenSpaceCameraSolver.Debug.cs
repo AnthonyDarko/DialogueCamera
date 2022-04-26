@@ -70,7 +70,7 @@ namespace Pangu.Tools
             var ppp = posCenter + Vector3.ProjectOnPlane(position - posCenter, camera.transform.up);
             DrawLine(posCenter, cp);
             DrawLine(posCenter, ppp);
-            Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 3 );
+            //Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 8);
             DrawLine(position, ppp);
             #endregion
             SetColor(Color.white);

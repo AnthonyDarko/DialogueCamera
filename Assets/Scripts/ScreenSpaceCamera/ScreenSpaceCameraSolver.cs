@@ -49,6 +49,7 @@ namespace Pangu.Tools
         [SerializeField] private float Var1;// = _camera.transform.up.y;
         [SerializeField] private float Var2;
         [SerializeField] private float Var3;
+        [SerializeField] private float Var4;
 
         public double bCompX => back.compositionX;
         public double bCompY => back.compositionY;
@@ -140,7 +141,7 @@ namespace Pangu.Tools
             //先由L点做FWF的平行线，交WBWF于点N，得到一个相似三角形，由BL/FB的比值与向量WBWF相乘得到向量WBN
             //从N点向X-Z水平面做垂线得到垂足即投影点K，此时可以得到B'K向量，由于WBB'与B'LN面垂直，所以B'K向量同时与NK向量和WBB'向量垂直
             //此时WBK向量可以由向量WBN得到，即直接去掉y轴坐标，由此，可以得到WBK向量，WBB'向量，B'K向量，三者在长度上符合勾股定理
-            //至此，拿到cos(K_WB_B')的值，即世界坐标系下，相机偏航角的补角的余弦值，让WBK向量绕Y轴旋转该角度拿到相机的右方向向量
+            //至此，拿到cos(K_WB_B')的值，让WBK向量绕Y轴旋转该角度拿到相机的右方向向量
             //此时，再由WBB'向量与WBN拿到B'N向量，再通过B'N，B'L，LN三者的数量关系拿到角LB'N，使B'N绕相机右方向旋转角度LB'N拿到向量B'L
             //将B'L与向量WBB'叉乘拿到相机的上方向向量
             if (true)
@@ -172,12 +173,15 @@ namespace Pangu.Tools
                 //var BdotWB = sqrt(bl * bl - BdotL * BdotL) ;//abs(bl * _sinC); 
                 //float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude); //夹角的Cos值应该由向量除以两个向量的模才能得到，这里的计算方式有问题，Why?不能用这种方式进行计算，寻找其他数值方法计算
                 //var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
-                var WBBdot = bl * abs(_sinC);
+                //var WBBdot = sqrt((float)Vector3.Dot(VecWBK, VecWBK) - BdotN2);//bl * abs(_sinC);
 
                 var BdotK2 = BdotN2 - VecWbN.y * VecWbN.y;
                 var BdotK = sqrt(BdotK2);
-                var SinBdotWBK = (float)BdotK / sqrt((float)Vector3.Dot(VecWBK, VecWBK));
-                var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
+                var WBBdot = bl * _sinC;// sqrt(VecWBK.sqrMagnitude - BdotN2);
+                var SinBdotWBK = (float)(BdotK / VecWBK.magnitude); //sqrt((float)Vector3.Dot(VecWBK, VecWBK)));
+                var CosBdotWBK = (float)(WBBdot / VecWBK.magnitude);
+                //var TanBdotWBK = (float)(BdotK / WBBdot);
+                var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;// * 0.92f;
 
                 //判断VecWBBdot与VecWBK的位置关系
                 {
@@ -191,9 +195,10 @@ namespace Pangu.Tools
                     }
                 }
 
-                Var1 = (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);// sqrt(bl * bl - BdotL * BdotL);// VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
+                Var1 = (float)(bl * _cosC * bl * _cosC + VecWbN.y * VecWbN.y);//(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);// sqrt(bl * bl - BdotL * BdotL);// VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
                 Var2 = (float)(LN * LN + bl * _cosC * bl * _cosC);// abs(bl * _sinC);// bl;  // (Mathf.Asin((float)(BdotWB / bl)) * Mathf.Rad2Deg);// (bl * _sinC);// (BdotL * BdotL + LN * LN);
-                Var3 = (float)0;   // (bl * _sinC);
+                Var3 = (float)(bl * _sinC * bl * _sinC);// (BdotN2 - VecWbN.y * VecWbN.y);//LN;//BdotWBK;   // (bl * _sinC);
+                Var4 = (float)(VecWBK.sqrMagnitude - BdotN2);// (bl * _cosC * bl * _cosC);// VecWbN.y;// _cosC;//(bl * _sinC);
 
                 //判断VecWBBdot与CameraRight的位置关系
                 Vector3 VecWBBdot;
