@@ -149,10 +149,11 @@ namespace Pangu.Tools
                 var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);
                 var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
                 // B'L = BL * cos(Yaw), LN = fY * blPfb, B'N = sqrt(B'L * B'L + LN * LN), B'K = sqrt(B'N * B'N - VecWbN.y * VecWbN.y)
-                var BdotL = bl * abs(_cosC); 
+                var BdotL = bl * abs(_cosC); //平移之后得到的L点并不在BdotNK平面上，所以才有平移后的L点离原L点越远误差越大的情况
 
                 //LN的值需要根据fY与bY的空间位置关系来判断，有两者同向和两者异向的情况
-                //double LN;
+                double LN;
+                LN = abs(fY - bY) * blPfb;
                 //LN = sqrt(VecWbN.magnitude * VecWbN.magnitude - bl * _sinC * bl * _sinC); //bl的值是会变化的
                 //if (fCompY * bCompY < 0)
                 //{
@@ -163,15 +164,20 @@ namespace Pangu.Tools
                 //    LN = (abs(fY) - abs(bY)) * blPfb;
                 //}
 
-                var BdotN2 = VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC; //BdotL * BdotL + LN * LN; //这里的计算方式需要改变，
+                var BdotN2 = (LN * LN + bl * _cosC * bl * _cosC);//VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC; //BdotL * BdotL + LN * LN; //这里的计算方式需要改变，
                 //var BdotK = sqrt(BdotN2 - VecWbN.y * VecWbN.y);
                 //var SinBdotWBK = BdotK / (VecWBK.magnitude);
                 //var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
-                var BdotWB = abs(bl * _sinC); 
-                float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude);
-                var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
+                //var BdotWB = sqrt(bl * bl - BdotL * BdotL) ;//abs(bl * _sinC); 
+                //float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude); //夹角的Cos值应该由向量除以两个向量的模才能得到，这里的计算方式有问题，Why?不能用这种方式进行计算，寻找其他数值方法计算
+                //var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
                 var WBBdot = bl * abs(_sinC);
+
+                var BdotK2 = BdotN2 - VecWbN.y * VecWbN.y;
+                var BdotK = sqrt(BdotK2);
+                var SinBdotWBK = (float)BdotK / (VecWBK.magnitude);
+                var BdotWBK = Mathf.Asin(SinBdotWBK) * Mathf.Rad2Deg;
 
                 //判断VecWBBdot与VecWBK的位置关系
                 {
@@ -185,11 +191,9 @@ namespace Pangu.Tools
                     }
                 }
 
-                Var1 = (float)VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
-                Var2 = (float)bl;// (Mathf.Asin((float)(BdotWB / bl)) * Mathf.Rad2Deg);// (bl * _sinC);// (BdotL * BdotL + LN * LN);
-                Var3 = (float)(bl * _sinC);
-
-
+                Var1 = (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);// sqrt(bl * bl - BdotL * BdotL);// VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
+                Var2 = (float)(LN * LN + bl * _cosC * bl * _cosC);// abs(bl * _sinC);// bl;  // (Mathf.Asin((float)(BdotWB / bl)) * Mathf.Rad2Deg);// (bl * _sinC);// (BdotL * BdotL + LN * LN);
+                Var3 = (float)0;   // (bl * _sinC);
 
                 //判断VecWBBdot与CameraRight的位置关系
                 Vector3 VecWBBdot;
