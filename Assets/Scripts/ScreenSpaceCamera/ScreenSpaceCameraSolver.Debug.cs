@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+﻿//#if UNITY_EDITOR
 
 using UnityEditor;
 using UnityEngine;
@@ -11,10 +11,10 @@ namespace Pangu.Tools
 
         private void DebugInfo()
         {
-            var size = 0.02f;
-            Gizmos.DrawSphere(_lookCenter, size);
-            Gizmos.DrawSphere(_bp, size);
-            Gizmos.DrawSphere(_fp, size);
+            var size = 0.001f;
+            //Gizmos.DrawSphere(_lookCenter, size);
+            //Gizmos.DrawSphere(_bp, size);
+            //Gizmos.DrawSphere(_fp, size);
         }
 
         private void OnDrawGizmos()
@@ -26,6 +26,25 @@ namespace Pangu.Tools
             DrawResultPoint(_camera, wfPosition, Color.green, out var fvp);
             DrawLine(bvp, fvp);
             DebugInfo();
+
+            //辅助线
+            Handles.DrawLine(_bp, _bp + cameraRight * 0.1f);
+            Handles.DrawLine(wbPosition, wbPosition + cameraRight * 0.1f);
+            Handles.DrawLine(wbPosition, wbPosition + Vector3.up * 0.03f);
+            var VecWbWf = wfPosition - wbPosition;
+            var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);  //N点的位置是会发生变化的
+            var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
+            Handles.DrawLine(wbPosition, wbPosition + VecWBK);
+            Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.1f);
+            Handles.DrawLine(_lookCenter, _lookCenter + (wbPosition - _bp) * 2);
+            //Handles.DrawLine(_fp, _fp + (wfPosition - _fp) * 10);
+            Handles.DrawLine(wbPosition, wbPosition + VecWbN * 1f);
+            Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
+            Handles.DrawLine(wbPosition, wbPosition + _camera.transform.right * 0.07f);
+            //Handles.DrawLine(_lookCenter, _lookCenter + _camera.transform.forward * 1f);
+
+
+
         }
 
         private void DrawResultPoint(Camera camera, Vector3 position, Color color, out Vector3 nearPos)
@@ -49,19 +68,19 @@ namespace Pangu.Tools
             SetColor(Color.white);
             Handles.Label(_bp, "B");
             Handles.Label(_fp, "F");
-            Handles.Label(wbPosition, "WB");
-            Handles.Label(wfPosition, "WF");
+            Handles.Label(wbPosition, "W_B");
+            Handles.Label(wfPosition, "W_F");
             Handles.Label(_lookCenter, "L");
             Handles.Label(cp, "C");
             Handles.Label((ppp + posCenter) / 2, $"{Mathf.Abs(vp.x * 2 - 1):F2}");
             Handles.Label((ppp + position) / 2, $"{(vp.y - 0.5f):F2}");
             DrawLine(nearCenter, cp);
-            DrawLine(wbPosition, wbPosition + _fp - _bp);
+            //DrawLine(wfPosition, wfPosition - _fp + _bp);
         }
 
         private void DrawTarget()
         {
-            DrawLine(wfPosition, wbPosition);
+            //DrawLine(wfPosition, wbPosition);
             DrawLine(_bp, _fp);
             var size = 80f;
             var sv = SceneView.currentDrawingSceneView;
@@ -75,10 +94,10 @@ namespace Pangu.Tools
             var bsp = camera.WorldToScreenPoint(wbPosition);
             var bSize = size / bsp.z;
             var fSize = bSize / (float)_overSacle;
-            EditorGUI.DrawRect(new Rect(fsp.x - fSize, camera.pixelHeight - fsp.y - 2 * fSize,
-                fSize * 2, fSize * 2), Color.blue * 0.4f);
-            EditorGUI.DrawRect(new Rect(bsp.x - bSize, camera.pixelHeight - bsp.y - 2 * bSize,
-                bSize * 2, bSize * 2), Color.blue * 0.4f);
+            //EditorGUI.DrawRect(new Rect(fsp.x - fSize, camera.pixelHeight - fsp.y - 2 * fSize,
+            //    fSize * 2, fSize * 2), Color.blue * 0.4f);
+            //EditorGUI.DrawRect(new Rect(bsp.x - bSize, camera.pixelHeight - bsp.y - 2 * bSize,
+            //    bSize * 2, bSize * 2), Color.blue * 0.4f);
             Handles.EndGUI();
         }
 
@@ -105,4 +124,4 @@ namespace Pangu.Tools
     }
 }
 
-#endif
+//#endif

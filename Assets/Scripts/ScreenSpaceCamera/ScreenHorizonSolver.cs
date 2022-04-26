@@ -92,8 +92,8 @@ namespace Pangu.Tools
 
         private void CalcClassicCameraPos()
         {
-            double bCompsition = 1f - bCompositionX * 2;
-            double fComposition = 1f - fCompositionX * 2;
+            double bCompsition = 1f - bCompositionX * 2; //这里的X控制的是左右两侧物体距离左右两侧的距离的屏幕空间坐标
+            double fComposition = 1f - fCompositionX * 2; //这里乘以2是要给整个模型腾出余量
             if (bCompsition == 0 || fComposition == 0)
             {
                 return;
@@ -104,13 +104,13 @@ namespace Pangu.Tools
             }
             _tanHalfHorizonFov = _tanHalfVerticalFov * aspect;
             //bx/bl/(bx/cx)-(xl/bl)=cx/bl-xl/bl=cl/bl
-            double clPbl = _sinC / _tanHalfHorizonFov / bCompsition - _cosC;
-            double clPfl = _sinC / _tanHalfHorizonFov / fComposition + _cosC;
+            double clPbl = _sinC / _tanHalfHorizonFov / bCompsition - _cosC;  // CL / BL
+            double clPfl = _sinC / _tanHalfHorizonFov / fComposition + _cosC;  // CL / FL
             //cl/fl/(cl*(bl+fl)/(fl*bl))=(fl*bl)/(fl*(fl+bl))=bl/(fl+bl)
-            focus = clPfl / (clPfl + clPbl);
+            focus = clPfl / (clPfl + clPbl); // BL / FB
             if (focus != 0)
             {
-                cl = _fbDistance * focus * clPbl;
+                cl = _fbDistance * focus * clPbl;  //三个已知值算出未知值CL
             }
             _bWidthToEdge = (cl + _fbDistance * focus * _cosC) * _tanHalfHorizonFov;
             _fWidthToEdge = (cl - _fbDistance * (1 - focus) * _cosC) * _tanHalfHorizonFov;
