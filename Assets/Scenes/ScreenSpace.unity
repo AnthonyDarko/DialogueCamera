@@ -700,25 +700,25 @@ MonoBehaviour:
   _camera: {fileID: 20765435506235157}
   front:
     target: {fileID: 1637476580}
-    compositionX: 0.767
-    compositionY: -0.15
+    compositionX: 0.583
+    compositionY: -0.267
   back:
     target: {fileID: 121169641}
-    compositionX: 0.485
-    compositionY: -0.291
-  yaw: -30
+    compositionX: 0.325
+    compositionY: 0.218
+  yaw: -42
   fov: 50
   dutch: 0
-  x_Test: 0.869461
-  y_Test: 0
-  z_Test: -0.49400157
-  x_Right: 0.8609518
+  x_Test: 0.78621924
+  y_Test: -0.000000029802322
+  z_Test: -0.61794764
+  x_Right: 0.7840357
   y_Right: 0
-  z_Right: -0.50868654
-  Var1: 0.15260595
+  z_Right: -0.6207158
+  Var1: 0.13914678
   Var2: 0.15811388
   Var3: 0.05
-  Var4: 0.041369375
+  Var4: 0.07508779
 --- !u!4 &4284610708909541
 Transform:
   m_ObjectHideFlags: 0
@@ -726,8 +726,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1067864264633865}
-  m_LocalRotation: {x: 0.0307958, y: 0.26256198, z: -0.008384398, w: 0.9643872}
-  m_LocalPosition: {x: -0.03913785, y: 0.05844399, z: -0.17519492}
+  m_LocalRotation: {x: 0.4652346, y: 0.2850891, z: -0.16128469, w: 0.8223553}
+  m_LocalPosition: {x: -0.058019307, y: 0.167802, z: -0.15009677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

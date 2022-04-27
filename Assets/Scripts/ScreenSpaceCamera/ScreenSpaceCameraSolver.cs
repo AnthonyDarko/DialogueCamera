@@ -119,7 +119,7 @@ namespace Pangu.Tools
             var clPfb = clPbl * clPfl / (clPfl + clPbl); // CL / FB
             var clPfb2 = clPfb * clPfb; // CL / FB 的平方
             //CL的值求解
-            var x = _sinC / fCompX / _aspect * 2; // AE / FL //tan(FLD)   //_sinC / fCompX * 2 / _aspect; // (这里的常量2可以考虑去掉) 可以约为 [ sinC / (fCompX / 2 * aspect) ] => 2 * tan(DLF)，设中轴线交点为A，下边界交点为D，最后可以得到 2 * FD / FL
+            var x = _sinC / fCompX / _aspect * 2; // AE / FL //tan(FLD)   //_sinC / fCompX * 2 / _aspect; // (这里的常量2可以考虑去掉，常量2不能去掉，这是为什么？) 可以约为 [ sinC / (fCompX / 2 * aspect) ] => 2 * tan(DLF)，设中轴线交点为A，下边界交点为D，最后可以得到 2 * FD / FL
             var clPdh2 = clPfl * clPfl / (abs(fCompY - bCompY / _overSacle) * x * abs(fCompY - bCompY / _overSacle) * x); // 这里的对应关系错了，需要重新解算 // bCompY * _overSacle，这是拿到bCompY在fCompY平面上投影的高度，dh的意思是fCompY与bCompY在F的投影面上的高度差
             var clPwfwb2 = clPfb2 * clPdh2 / (clPfb2 + clPdh2);
             var wfwb = Vector3.Distance(wbPosition, wfPosition);
@@ -168,20 +168,20 @@ namespace Pangu.Tools
                 //    LN = (abs(fY) - abs(bY)) * blPfb;
                 //}
 
-                var BdotN2 = (LN * LN + bl * _cosC * bl * _cosC);//VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC; //BdotL * BdotL + LN * LN; //这里的计算方式需要改变，
-                //var BdotK = sqrt(BdotN2 - VecWbN.y * VecWbN.y);
-                //var SinBdotWBK = BdotK / (VecWBK.magnitude);
-                //var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
+                var WBBdot = bl * abs(_sinC); //bl的值应该是在变化的，并且变化幅度较大，不应该一直保持不变
+                var BdotN2 = VecWBN.sqrMagnitude - WBBdot * WBBdot; // (LN * LN + bl * _cosC * bl * _cosC);//// BdotL * BdotL + LN * LN; //这里的计算方式需要改变，
+                var BdotK = sqrt(BdotN2 - VecWBN.y * VecWBN.y);
+                var SinBdotWBK = BdotK / (VecWBK.magnitude);
+                var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
                 //var BdotWB = sqrt(bl * bl - BdotL * BdotL) ;//abs(bl * _sinC); 
                 //float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude); //夹角的Cos值应该由向量除以两个向量的模才能得到，这里的计算方式有问题，Why?不能用这种方式进行计算，寻找其他数值方法计算
                 //var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
-                var WBBdot = bl * abs(_sinC); //bl的值应该是在变化的，并且变化幅度较大，不应该一直保持不变
 
-                var BdotK2 = BdotN2 - VecWBN.y * VecWBN.y;
-                var BdotK = sqrt(BdotK2);
-                var SinBdotWBK = (float)BdotK / sqrt((float)Vector3.Dot(VecWBK, VecWBK));
-                var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
+                //var BdotK2 = BdotN2 - VecWBN.y * VecWBN.y;
+                //var BdotK = sqrt(BdotK2);
+                //var SinBdotWBK = (float)BdotK / sqrt((float)Vector3.Dot(VecWBK, VecWBK));
+                //var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
                 //判断VecWBBdot与VecWBK的位置关系
                 {

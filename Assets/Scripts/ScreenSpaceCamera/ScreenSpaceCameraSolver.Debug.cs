@@ -36,14 +36,14 @@ namespace Pangu.Tools
             var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);
             var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
             Handles.DrawLine(wbPosition, wbPosition + VecWbWf);
-            Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.05f);
-            Handles.DrawLine(_lookCenter, _lookCenter + (wfPosition - _fp) * 10);
+            //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.05f);
+            //Handles.DrawLine(_lookCenter, _lookCenter + (wfPosition - _fp) * 10);
             //Handles.DrawLine(_lookCenter, _lookCenter + Vector3.down * 0.1f);
             //Handles.DrawLine(_fp, _fp + (wfPosition - _fp) * 10);
             Handles.DrawLine(wbPosition, wbPosition + VecWbN * 1f);
             Handles.Label(wbPosition + VecWbN, "N");
             //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
-            Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
+            //Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
             Handles.Label(wbPosition + VecWBK, "K");
             //Handles.DrawLine(wbPosition, _camera.transform.position - wbPosition);
             //Handles.DrawLine(wfPosition, wfPosition + (_camera.transform.position - wfPosition));
@@ -68,7 +68,7 @@ namespace Pangu.Tools
             var ppp = posCenter + Vector3.ProjectOnPlane(position - posCenter, camera.transform.up);
             DrawLine(posCenter, cp);
             DrawLine(posCenter, ppp);
-            Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 11 );
+            //Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 11 );
             DrawLine(position, ppp);
             #endregion
             SetColor(Color.white);
