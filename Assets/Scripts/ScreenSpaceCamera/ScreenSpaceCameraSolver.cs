@@ -156,8 +156,8 @@ namespace Pangu.Tools
                 var BdotL = bl * abs(_cosC); //平移之后得到的L点并不在BdotNK平面上，所以才有平移后的L点离原L点越远误差越大的情况
 
                 //LN的值需要根据fY与bY的空间位置关系来判断，有两者同向和两者异向的情况
-                double LN;
-                LN = abs(fY - bY) * blPfb;
+                //double LN;
+                //LN = abs(fY - bY) * blPfb;
                 //LN = sqrt(VecWbN.magnitude * VecWbN.magnitude - bl * _sinC * bl * _sinC); //bl的值是会变化的
                 //if (fCompY * bCompY < 0)
                 //{
@@ -174,15 +174,6 @@ namespace Pangu.Tools
                 var SinBdotWBK = BdotK / (VecWBK.magnitude);
                 var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
 
-                //var BdotWB = sqrt(bl * bl - BdotL * BdotL) ;//abs(bl * _sinC); 
-                //float CosBdotWBK = (float)BdotWB / (VecWBK.magnitude); //夹角的Cos值应该由向量除以两个向量的模才能得到，这里的计算方式有问题，Why?不能用这种方式进行计算，寻找其他数值方法计算
-                //var BdotWBK = Mathf.Acos(CosBdotWBK) * Mathf.Rad2Deg;
-
-                //var BdotK2 = BdotN2 - VecWBN.y * VecWBN.y;
-                //var BdotK = sqrt(BdotK2);
-                //var SinBdotWBK = (float)BdotK / sqrt((float)Vector3.Dot(VecWBK, VecWBK));
-                //var BdotWBK = Mathf.Asin((float)SinBdotWBK) * Mathf.Rad2Deg;
-
                 //判断VecWBBdot与VecWBK的位置关系
                 {
                     if (yaw < 0)
@@ -194,13 +185,16 @@ namespace Pangu.Tools
                         cameraRight = (Quaternion.AngleAxis(BdotWBK, Vector3.up) * -VecWBK).normalized;
                     }
                 }
+
+                //Debug
                 var VecWfWbK = new Vector3(VecWbWf.x, 0, VecWbWf.z);
                 Var1 = (float)fb;// VecWBN.magnitude;//(VecWBK.sqrMagnitude - BdotK2);// (VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);// sqrt(bl * bl - BdotL * BdotL);// VecWBK.magnitude;// (Mathf.Asin((float)_sinC) * Mathf.Rad2Deg);// BdotL;// (float)(VecWbN.sqrMagnitude - bl * _sinC * bl * _sinC);
                 Var2 = (float)wfwb;// (bl);// (bl * bl - bl * _cosC * bl * _cosC);// (LN * LN + bl * _cosC * bl * _cosC);// abs(bl * _sinC);// bl;  // (Mathf.Asin((float)(BdotWB / bl)) * Mathf.Rad2Deg);// (bl * _sinC);// (BdotL * BdotL + LN * LN);
                 Var3 = (float)VecWbWf.y;// VecWfWbK.magnitude;// (cl);// BdotK;// (VecWbN.sqrMagnitude);//(VecWbN.magnitude);   // (bl * _sinC);
                 Var4 = (float)(abs(fCompY - bCompY / _overSacle) * x * fl);// VecWBK.magnitude;// (bl * _cosC);// (bl * _sinC * bl * _sinC);//(bl * _sinC);
+                ////////////////////
 
-                //判断VecWBBdot与CameraRight的位置关系
+                //判断VecWBBdot与CameraRight的方向关系
                 Vector3 VecWBBdot;
                 {
                     if (yaw > 0)
@@ -217,10 +211,10 @@ namespace Pangu.Tools
                 //var KBdotN = Mathf.Acos((float)(BdotK / sqrt(BdotN2))) * Mathf.Rad2Deg; //KBdotN的角度不是实际的转角，还需要加上LBdotN，拿到角KBdotL
                 var LBdotN = Mathf.Acos((float)(BdotL / sqrt(BdotN2))) * Mathf.Rad2Deg;
                 var VecBdotN = VecWBN - VecWBBdot;
-                //var LBdotK = abs((float)KBdotN) + abs((float)LBdotN); //不需要这个角度，直接旋转VecBdotN KBdotN度即可
+                //var LBdotK = abs((float)KBdotN) + abs((float)LBdotN); //不需要这个角度，直接旋转VecBdotN LBdotN度即可
                 //判断VecBdotN与VecLBdot（即camFwd）的位置关系
                 {
-                    if (abs(fY) > abs(bY))
+                    if (fY < bY)
                     {
                         camFwd = Quaternion.AngleAxis((float)LBdotN * (1.0f), (1.0f * cameraRight)) * -VecBdotN.normalized;
                     }
@@ -233,19 +227,19 @@ namespace Pangu.Tools
                 camUp = Vector3.Cross(camFwd, cameraRight);
 
                 //迭代部分
-                var upAxis = _camera.transform.up; // camUp;//
-                x_Test = _camera.transform.right.normalized.x;
-                y_Test = _camera.transform.right.normalized.y;
-                z_Test = _camera.transform.right.normalized.z;
+                var upAxis = camUp;//_camera.transform.up; // 
+                x_Test = _camera.transform.up.normalized.x;
+                y_Test = _camera.transform.up.normalized.y;
+                z_Test = _camera.transform.up.normalized.z;
                 _bp = wbPosition - upAxis * (float)(bY);
                 _fp = wfPosition - upAxis * (float)(fY);
                 _lookCenter = _bp * (float)flPfb + _fp * (float)blPfb;
                 var cameraFwd =  Quaternion.AngleAxis(-yaw, upAxis) * (_bp - _fp).normalized; //camFwd;//
                 //////////////////////////
 
-                x_Right = cameraRight.x;
-                y_Right = cameraRight.y;
-                z_Right = cameraRight.z;
+                x_Right = camUp.x;
+                y_Right = camUp.y;
+                z_Right = camUp.z;
 
                 #endregion
 

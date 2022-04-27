@@ -31,7 +31,7 @@ namespace Pangu.Tools
             Handles.DrawLine(_bp, _bp + cameraRight * 0.1f);
             Handles.DrawLine(wbPosition, wbPosition + _camera.transform.right * 0.07f);
             //Handles.DrawLine(wbPosition, wbPosition + cameraRight * 0.1f);
-            Handles.DrawLine(wbPosition, wbPosition + Vector3.up * 0.03f);
+            //Handles.DrawLine(wbPosition, wbPosition + Vector3.up * 0.03f);
             var VecWbWf = wfPosition - wbPosition;
             var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);
             var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
@@ -41,7 +41,7 @@ namespace Pangu.Tools
             //Handles.DrawLine(_lookCenter, _lookCenter + Vector3.down * 0.1f);
             //Handles.DrawLine(_fp, _fp + (wfPosition - _fp) * 10);
             Handles.DrawLine(wbPosition, wbPosition + VecWbN * 1f);
-            Handles.Label(wbPosition + VecWbN, "N");
+            //Handles.Label(wbPosition + VecWbN, "N");
             //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
             //Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
             Handles.Label(wbPosition + VecWBK, "K");
