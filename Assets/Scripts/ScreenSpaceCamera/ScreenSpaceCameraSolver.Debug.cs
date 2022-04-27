@@ -33,9 +33,9 @@ namespace Pangu.Tools
             //Handles.DrawLine(wbPosition, wbPosition + cameraRight * 0.1f);
             Handles.DrawLine(wbPosition, wbPosition + Vector3.up * 0.03f);
             var VecWbWf = wfPosition - wbPosition;
-            var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);  //N点的位置是会发生变化的
+            var VecWbN = new Vector3(VecWbWf.x * (float)blPfb, VecWbWf.y * (float)blPfb, VecWbWf.z * (float)blPfb);
             var VecWBK = new Vector3(VecWbN.x, 0, VecWbN.z);
-            Handles.DrawLine(wbPosition, wbPosition + VecWBK);
+            Handles.DrawLine(wbPosition, wbPosition + VecWbWf);
             Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + Vector3.up * 0.05f);
             Handles.DrawLine(_lookCenter, _lookCenter + (wfPosition - _fp) * 10);
             //Handles.DrawLine(_lookCenter, _lookCenter + Vector3.down * 0.1f);
@@ -45,13 +45,11 @@ namespace Pangu.Tools
             //Handles.DrawLine(wbPosition + VecWBK, wbPosition + VecWBK + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.2f);
             Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
             Handles.Label(wbPosition + VecWBK, "K");
+            //Handles.DrawLine(wbPosition, _camera.transform.position - wbPosition);
+            //Handles.DrawLine(wfPosition, wfPosition + (_camera.transform.position - wfPosition));
 
             //Handles.DrawLine(bvp, bvp + (wfPosition - _fp) * 10);
-
             //Handles.DrawLine(_lookCenter, _lookCenter + _camera.transform.forward * 1f);
-
-
-
         }
 
         private void DrawResultPoint(Camera camera, Vector3 position, Color color, out Vector3 nearPos)
@@ -70,15 +68,16 @@ namespace Pangu.Tools
             var ppp = posCenter + Vector3.ProjectOnPlane(position - posCenter, camera.transform.up);
             DrawLine(posCenter, cp);
             DrawLine(posCenter, ppp);
-            Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 3 );
+            Handles.DrawLine(posCenter, posCenter + (wfPosition - _fp) * 11 );
             DrawLine(position, ppp);
             #endregion
             SetColor(Color.white);
             Handles.Label(_bp, "B");
             Handles.Label(_fp, "F");
-            Handles.Label(wbPosition, "W_B");
-            Handles.Label(wfPosition, "W_F");
+            Handles.Label(wbPosition, "W_b");
+            Handles.Label(wfPosition, "W_f");
             Handles.Label(_lookCenter, "L");
+            Handles.Label(_lookCenter + camera.transform.forward * (-1.0f) * (float)fl * (float)_cosC, "A");
             Handles.Label(cp, "C");
             Handles.Label((ppp + posCenter) / 2, $"{Mathf.Abs(vp.x * 2 - 1):F2}");
             Handles.Label((ppp + position) / 2, $"{(vp.y - 0.5f):F2}");
