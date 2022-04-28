@@ -55,6 +55,13 @@ namespace Pangu.Tools
         private double _fWidthToEdge;
         private double _btProjector;
         private double _ftProjector;
+        private double tanFCFdot;
+        private double FCFdot;
+        private double FFdot;
+        private double CFdot;
+        private double BBdot;
+
+        public float CFDis;
 
         private void Update()
         {
@@ -82,12 +89,20 @@ namespace Pangu.Tools
             aspect = _camera.aspect;
             _fPos = ftPosition;
             _bPos = btPosition;
-
+           
             _cAngle = Mathf.Abs(yaw);
             _fbDistance = Vector3.Distance(_bPos, _fPos);
             _sinC = Mathf.Sin(Mathf.PI / 180 * _cAngle);
             _cosC = Mathf.Cos(Mathf.PI / 180 * _cAngle);
             _tanHalfVerticalFov = Mathf.Tan(Mathf.PI / 180 * fov / 2);
+            CFDis = 4.3f;
+            //利用fov和aspect求出tanFCF'的值，再得出FCF'的度数
+            tanFCFdot = fCompositionX * _tanHalfVerticalFov * aspect;
+            FCFdot = Mathf.Atan(tanFCFdot) * Mathf.Rad2Deg;
+            FFdot = CFDis * Mathf.Sin(FCFdot * Mathf.Deg2Rad);
+            CFdot = CFDis * Mathf.Cos(FCFdot * Mathf.Deg2Rad);
+            //BBdot = FFdot / fCompositionX * bCompositionX
+
         }
 
         private void CalcClassicCameraPos()
@@ -124,6 +139,7 @@ namespace Pangu.Tools
             _camera.transform.position = _lookCenter + (float)(cl)* (Quaternion.Euler(0, -yaw, 0) * (_fPos - _bPos)).normalized;
             _camera.transform.LookAt(_lookCenter);
             _camera.fieldOfView = fov;
+            //CFDis = (_camera.transform.position - _fPos).magnitude;
         }
 
         private bool Valid()
@@ -143,7 +159,7 @@ namespace Pangu.Tools
             return Vector3.Distance(a, b) < 0.01f;
         }
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
         #region Debug
 
@@ -199,7 +215,7 @@ namespace Pangu.Tools
 
         #endregion
 
-#endif
+//#endif
 
     }
 }

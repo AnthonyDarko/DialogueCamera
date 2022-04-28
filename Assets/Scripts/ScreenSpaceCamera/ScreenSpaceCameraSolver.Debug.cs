@@ -24,7 +24,7 @@ namespace Pangu.Tools
             DrawTarget();
             DrawResultPoint(_camera, wbPosition, Color.red, out var bvp);
             DrawResultPoint(_camera, wfPosition, Color.green, out var fvp);
-            DrawLine(bvp, fvp);
+            //DrawLine(bvp, fvp);
             DebugInfo();
 
             //辅助线
@@ -46,7 +46,7 @@ namespace Pangu.Tools
             //Handles.DrawLine( new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z), new Vector3(_camera.transform.position.x, 0, _camera.transform.position.z) + new Vector3(_camera.transform.forward.x, 0, _camera.transform.forward.z) * 0.3f);
             Handles.Label(wbPosition + VecWBK, "K");
             //Handles.DrawLine(wbPosition, _camera.transform.position - wbPosition);
-            //Handles.DrawLine(wfPosition, wfPosition + (_camera.transform.position - wfPosition));
+            Handles.DrawLine(_fp, _fp + (_camera.transform.position - _fp));
 
             //Handles.DrawLine(bvp, bvp + (wfPosition - _fp) * 10);
             //Handles.DrawLine(_lookCenter, _lookCenter + _camera.transform.forward * 1f);
@@ -82,7 +82,7 @@ namespace Pangu.Tools
             Handles.Label((ppp + posCenter) / 2, $"{Mathf.Abs(vp.x * 2 - 1):F2}");
             Handles.Label((ppp + position) / 2, $"{(vp.y - 0.5f):F2}");
             DrawLine(nearCenter, cp);
-            DrawLine(wbPosition, wbPosition + _fp - _bp);
+            DrawLine(wbPosition, wbPosition + (_fp - _bp) * 1.2f);
         }
 
         private void DrawTarget()
