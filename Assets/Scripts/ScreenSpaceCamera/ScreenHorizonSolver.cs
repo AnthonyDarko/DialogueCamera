@@ -27,7 +27,7 @@ namespace Pangu.Tools
         public float bCompositionX = 0.33f;
         [Range(0,0.5f)]
         public float fCompositionX = 0.25f;
-        [Range(-90,90)]
+        [Range(-180,180)]
         public float yaw = -30;
         [Range(0.1f, 75)]
         public float fov = 30;
@@ -55,13 +55,23 @@ namespace Pangu.Tools
         private double _fWidthToEdge;
         private double _btProjector;
         private double _ftProjector;
+        private double bCompsition;
+        private double fComposition;
+
         private double tanFCFdot;
+        private double tanBCFdot;
         private double FCFdot;
+        private double BCFdot;
         private double FFdot;
         private double CFdot;
         private double BBdot;
 
+        private float CB;
+        public float CF;
         public float CFDis;
+        private float CBDis;
+        private double SC;
+        public float YawCal;
 
         private void Update()
         {
@@ -86,29 +96,52 @@ namespace Pangu.Tools
 
         private void CalcConstance()
         {
+            bCompsition = 1f - bCompositionX * 2; //这里的X控制的是左右两侧物体距离左右两侧的距离的屏幕空间坐标，得到的结果是横向占比
+            fComposition = 1f - fCompositionX * 2; //这里乘以2是要给整个模型腾出余量
+            CFDis = (_camera.transform.position - _fPos).magnitude;
+            CBDis = (_camera.transform.position - _bPos).magnitude;
+            //CF = CFDis;
+
             aspect = _camera.aspect;
             _fPos = ftPosition;
             _bPos = btPosition;
-           
+
+            //CFDis = 4.3f;
+            //利用fov和aspect求出tanFCF'的值，再得出FCF'的度数，这里的fcompositionX需要转换一下
+            tanFCFdot = (fComposition) * _tanHalfVerticalFov * aspect;
+            tanBCFdot = (bCompsition) * _tanHalfVerticalFov * aspect;
+            FCFdot = Mathf.Atan((float)tanFCFdot) * Mathf.Rad2Deg;
+            BCFdot = Mathf.Atan((float)tanBCFdot) * Mathf.Rad2Deg;
+            FFdot = CFDis * Mathf.Sin((float)FCFdot * Mathf.Deg2Rad);
+            CFdot = CFDis * Mathf.Cos((float)FCFdot * Mathf.Deg2Rad);
+
+            //BBdot = FFdot / fCompositionX * bCompositionX
+            //余弦定理求解BC边，直接用求根公式求解
+            float BCF = (float)(FCFdot + BCFdot);
+            float CosBCF = Mathf.Cos(Mathf.Atan((float)tanFCFdot) + Mathf.Atan((float)tanBCFdot));// (float)BCF * Mathf.Deg2Rad); //
+
+            float b = -2.0f * CF * CosBCF;
+            float a = 1f;
+            float c = (float)CF * (float)CF - (float)_fbDistance * (float)_fbDistance;
+            float Delta = Mathf.Sqrt(b * b - 4 * a * c);
+            if (((-b + Delta) / 2 / a) > 0) CB = ((-b + Delta) / 2 / a);
+            else CB = ((-b - Delta) / 2 / a);
+
+            BBdot = CB * Mathf.Sin((float)Mathf.Atan((float)tanBCFdot));
+
+            SC = (BBdot + FFdot) / _fbDistance * (-1f);
+            YawCal = Mathf.Asin((float)SC) * Mathf.Rad2Deg;
+            yaw = YawCal;
+
             _cAngle = Mathf.Abs(yaw);
             _fbDistance = Vector3.Distance(_bPos, _fPos);
             _sinC = Mathf.Sin(Mathf.PI / 180 * _cAngle);
             _cosC = Mathf.Cos(Mathf.PI / 180 * _cAngle);
             _tanHalfVerticalFov = Mathf.Tan(Mathf.PI / 180 * fov / 2);
-            CFDis = 4.3f;
-            //利用fov和aspect求出tanFCF'的值，再得出FCF'的度数
-            tanFCFdot = fCompositionX * _tanHalfVerticalFov * aspect;
-            FCFdot = Mathf.Atan(tanFCFdot) * Mathf.Rad2Deg;
-            FFdot = CFDis * Mathf.Sin(FCFdot * Mathf.Deg2Rad);
-            CFdot = CFDis * Mathf.Cos(FCFdot * Mathf.Deg2Rad);
-            //BBdot = FFdot / fCompositionX * bCompositionX
-
         }
 
         private void CalcClassicCameraPos()
         {
-            double bCompsition = 1f - bCompositionX * 2; //这里的X控制的是左右两侧物体距离左右两侧的距离的屏幕空间坐标
-            double fComposition = 1f - fCompositionX * 2; //这里乘以2是要给整个模型腾出余量
             if (bCompsition == 0 || fComposition == 0)
             {
                 return;

@@ -254,14 +254,16 @@ MonoBehaviour:
   bTarget: {fileID: 1637476580}
   fTarget: {fileID: 121169641}
   bCompositionX: 0.253
-  fCompositionX: 0.119
-  yaw: -49
+  fCompositionX: 0.343
+  yaw: -57.11269
   fov: 55
   aspect: 1.4047619
-  focus: 0.5838295664748148
-  cl: 5.455229772886447
+  focus: 0.7021619946443458
+  cl: 2.250447405834302
   _camera: {fileID: 14535615}
-  CFDis: 4.3
+  CF: 2
+  CFDis: 2.017366
+  YawCal: -57.11269
 --- !u!20 &14535615
 Camera:
   m_ObjectHideFlags: 0
@@ -312,8 +314,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14535613}
-  m_LocalRotation: {x: 0, y: 0.41469327, z: 0, w: 0.9099613}
-  m_LocalPosition: {x: -4.117114, y: 1.55, z: -8.3655205}
+  m_LocalRotation: {x: 0, y: 0.47802278, z: 0, w: 0.87834746}
+  m_LocalPosition: {x: -1.8897911, y: 0, z: -4.6861563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -410,7 +412,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121169637}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: -7.5}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -680,7 +682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1637476576}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: -0.98}
+  m_LocalPosition: {x: 0, y: 0, z: -2.201}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
