@@ -36,10 +36,9 @@ namespace Pangu.Tools
         public Vector3 btPosition { get { return bTarget.position; } }
         public Vector3 ftPosition { get { return fTarget.position; } }
 
-
-        [SerializeField] private double focus;
-        [SerializeField] private double cl;
         [SerializeField] private Camera _camera;
+        private double focus;
+        private double cl;
 
         //[Header("Calc")]
         private Vector3 _fPos;
@@ -97,9 +96,9 @@ namespace Pangu.Tools
         private void CalcConstance()
         {
             bCompsition = 1f - bCompositionX * 2; //这里的X控制的是左右两侧物体距离左右两侧的距离的屏幕空间坐标，得到的结果是横向占比
-            fComposition = 1f - fCompositionX * 2; //这里乘以2是要给整个模型腾出余量
-            CFDis = (_camera.transform.position - _fPos).magnitude;
-            CBDis = (_camera.transform.position - _bPos).magnitude;
+            fComposition = 1f - fCompositionX * 2;
+            CFDis = (_camera.transform.position - _fPos).magnitude; //用于DEBUG
+            CBDis = (_camera.transform.position - _bPos).magnitude; //用于DEBUG
             //CF = CFDis;
 
             aspect = _camera.aspect;

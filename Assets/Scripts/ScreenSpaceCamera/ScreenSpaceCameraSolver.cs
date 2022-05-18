@@ -118,6 +118,7 @@ namespace Pangu.Tools
                         #endregion
 
                         //bCompX = 1f - 2 * bCompX;
+                        //fCompX = 1f - 2 * fCompX;
                         #region Solve
                         //c-相机，wb-背景目标，wf-前景目标，l相机中心线和fb的交点
                         //f-前景目标在相机水平面投影，b-背景目标在相机水平面投影
